@@ -5,60 +5,1093 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Western Pest Control — The Stomp</title>
   <meta name="description" content="Western Pest Control stomps the DIY competition. Here For Good — St. George, UT since 2001." />
-  <link rel="stylesheet" href="css/style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@400;600;700&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --blue:  #00457C;
+      --gold:  #C88A12;
+      --dgold: #D49433;
+      --white: #FFFFFF;
+      --black: #000000;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--blue);
+      background-image: radial-gradient(ellipse at 20% 10%, rgba(7,71,127,.6) 0%, transparent 60%),
+                        radial-gradient(ellipse at 80% 90%, rgba(0,30,60,.8) 0%, transparent 60%);
+      min-height: 100vh;
+      font-family: 'Oswald', sans-serif;
+      color: var(--white);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    /* HEADER */
+    .site-header {
+      width: 100%; max-width: 900px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 24px;
+      border-bottom: 2px solid rgba(200,138,18,.35);
+    }
+    .logo-area { display: flex; align-items: center; gap: 12px; }
+    #logoCanvas { border-radius: 50%; background: transparent; }
+    .header-text { display: flex; flex-direction: column; }
+    .brand-name { font-family:'Bebas Neue',cursive; font-size:1.35rem; letter-spacing:2px; color:var(--gold); line-height:1; }
+    .brand-tagline { font-size:.7rem; color:rgba(255,255,255,.6); letter-spacing:1.5px; margin-top:2px; }
+    .header-badge { font-size:.72rem; letter-spacing:1.5px; color:var(--gold);
+      background:rgba(200,138,18,.12); border:1px solid rgba(200,138,18,.3);
+      border-radius:20px; padding:5px 14px; }
+    /* STAGE */
+    .stage-wrap {
+      width:100%; max-width:900px; padding:20px 16px 32px;
+      display:flex; flex-direction:column; align-items:center; gap:16px;
+    }
+    .title-block { text-align:center; }
+    .stomp-title {
+      font-family:'Bebas Neue',cursive;
+      font-size:clamp(2.8rem,7vw,4.5rem);
+      color:var(--gold); letter-spacing:4px;
+      text-shadow:4px 4px 0 rgba(0,0,0,.5); line-height:1;
+    }
+    .stomp-sub { font-size:1rem; color:rgba(255,255,255,.7); letter-spacing:2px; margin-top:4px; }
+    /* CANVAS */
+    .canvas-container { position:relative; width:100%; max-width:800px; }
+    #gameCanvas {
+      width:100%; height:auto; display:block;
+      border:3px solid var(--gold); border-radius:14px;
+      box-shadow: 0 0 0 1px rgba(200,138,18,.2), 0 8px 40px rgba(0,0,0,.6), 0 0 80px rgba(0,69,124,.4);
+    }
+    /* HUD */
+    .hud-row { display:flex; gap:12px; flex-wrap:wrap; justify-content:center; width:100%; }
+    .hud-box {
+      font-family:'Bebas Neue',cursive; letter-spacing:2px; font-size:1.1rem;
+      color:var(--gold); background:rgba(0,0,0,.35);
+      border:1px solid rgba(200,138,18,.3); border-radius:8px;
+      padding:8px 20px; min-width:180px; text-align:center;
+    }
+    #statusMsg { color:rgba(255,255,255,.85); font-size:.95rem; font-family:'Oswald',sans-serif; font-weight:400; flex:1; max-width:420px; }
+    /* CONTROLS */
+    .controls { display:flex; gap:12px; flex-wrap:wrap; justify-content:center; }
+    .btn {
+      font-family:'Bebas Neue',cursive; font-size:1.25rem; letter-spacing:2px;
+      padding:12px 32px; border:none; border-radius:8px; cursor:pointer;
+      transition:transform .1s,box-shadow .1s; box-shadow:0 5px 0 rgba(0,0,0,.5);
+    }
+    .btn:hover { transform:translateY(-2px); box-shadow:0 7px 0 rgba(0,0,0,.5); }
+    .btn:active { transform:translateY(3px); box-shadow:0 2px 0 rgba(0,0,0,.5); }
+    .btn-gold { background:linear-gradient(135deg,var(--gold),var(--dgold)); color:var(--white); }
+    .btn-outline { background:transparent; color:var(--white); border:2px solid rgba(255,255,255,.4); box-shadow:0 5px 0 rgba(0,0,0,.3); }
+    .btn-outline:hover { border-color:var(--gold); color:var(--gold); }
+    /* LINEUP */
+    .company-lineup {
+      width:100%; max-width:760px; background:rgba(0,0,0,.25);
+      border:1px solid rgba(200,138,18,.2); border-radius:12px; padding:16px 20px;
+    }
+    .lineup-title { font-family:'Bebas Neue',cursive; letter-spacing:3px; color:var(--gold); font-size:1rem; margin-bottom:12px; text-align:center; }
+    .lineup-bugs { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; }
+    .lineup-card {
+      background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1);
+      border-radius:10px; padding:10px 14px; display:flex; align-items:center;
+      gap:8px; font-size:.82rem; color:rgba(255,255,255,.8); min-width:130px;
+    }
+    .lineup-card.stomped { background:rgba(200,138,18,.15); border-color:var(--gold); color:var(--gold); text-decoration:line-through; opacity:.6; }
+    .lineup-card .card-emoji { font-size:1.4rem; }
+    /* FOOTER */
+    .site-footer { padding:20px; text-align:center; font-size:.78rem; color:rgba(255,255,255,.35); border-top:1px solid rgba(255,255,255,.08); width:100%; }
+    .site-footer a { color:var(--gold); text-decoration:none; }
+    @media(max-width:600px){
+      .site-header{flex-direction:column;gap:8px;text-align:center;}
+      .hud-row{flex-direction:column;align-items:center;}
+      .lineup-card{min-width:110px;}
+    }
+  </style>
 </head>
 <body>
 
-  <div id="app">
-    <header class="site-header">
-      <div class="logo-area">
-        <canvas id="logoCanvas" width="60" height="60"></canvas>
-        <div class="header-text">
-          <span class="brand-name">WESTERN PEST CONTROL</span>
-          <span class="brand-tagline">Here For Good · Since 2001</span>
-        </div>
+<div id="app">
+  <header class="site-header">
+    <div class="logo-area">
+      <canvas id="logoCanvas" width="60" height="60"></canvas>
+      <div class="header-text">
+        <span class="brand-name">WESTERN PEST CONTROL</span>
+        <span class="brand-tagline">Here For Good · Since 2001</span>
       </div>
-      <div class="header-badge">ST. GEORGE, UT · 4.9 ⭐ · 3,000+ REVIEWS</div>
-    </header>
+    </div>
+    <div class="header-badge">ST. GEORGE, UT · 3,000+ FIVE-STAR REVIEWS ⭐</div>
+  </header>
 
-    <main class="stage-wrap">
-      <div class="title-block">
-        <h1 class="stomp-title">🥾 THE STOMP</h1>
-        <p class="stomp-sub">Western Pest Control vs. The DIY Competition</p>
-      </div>
+  <main class="stage-wrap">
+    <div class="title-block">
+      <h1 class="stomp-title">🥾 THE STOMP</h1>
+      <p class="stomp-sub">Western Pest Control vs. The DIY Competition</p>
+    </div>
+    <div class="canvas-container">
+      <canvas id="gameCanvas" width="800" height="500"></canvas>
+    </div>
+    <div class="hud-row">
+      <div class="hud-box" id="stompCounter">STOMPED: 0 / 5</div>
+      <div class="hud-box" id="statusMsg">Ready to protect Southern Utah?</div>
+    </div>
+    <div class="controls">
+      <button class="btn btn-gold" onclick="GameController.start()">🥾 START THE STOMP</button>
+      <button class="btn btn-outline" onclick="GameController.restart()">↺ RESTART</button>
+    </div>
+    <div class="company-lineup">
+      <div class="lineup-title">TODAY'S COMPETITION:</div>
+      <div class="lineup-bugs" id="lineupBugs"></div>
+    </div>
+  </main>
 
-      <div class="canvas-container">
-        <canvas id="gameCanvas" width="800" height="500"></canvas>
-        <div id="roundBanner" class="round-banner hidden"></div>
-      </div>
+  <footer class="site-footer">
+    <p>© Western Pest Control · Southern Utah's Pest Professionals · <a href="https://westernpestcontrolut.com" target="_blank">westernpestcontrolut.com</a></p>
+  </footer>
+</div>
 
-      <div class="hud-row">
-        <div class="hud-box" id="stompCounter">STOMPED: 0 / 5</div>
-        <div class="hud-box" id="statusMsg">Ready to protect Southern Utah?</div>
-      </div>
+<script>
+/* ============================================================
+   HELPERS
+   ============================================================ */
+// Cross-browser rounded rect with individual corner radii (tl, tr, br, bl)
+function rr(ctx, x, y, w, h, tl, tr, br, bl) {
+  tl=Math.max(0,tl||0); tr=Math.max(0,tr||0);
+  br=Math.max(0,br||0); bl=Math.max(0,bl||0);
+  ctx.moveTo(x + tl, y);
+  ctx.lineTo(x + w - tr, y);
+  if (tr) { ctx.arcTo(x + w, y,     x + w, y + tr,   tr); }
+  ctx.lineTo(x + w, y + h - br);
+  if (br) { ctx.arcTo(x + w, y + h, x + w - br, y + h, br); }
+  ctx.lineTo(x + bl, y + h);
+  if (bl) { ctx.arcTo(x,     y + h, x, y + h - bl,   bl); }
+  ctx.lineTo(x, y + tl);
+  if (tl) { ctx.arcTo(x,     y,     x + tl, y,        tl); }
+  ctx.closePath();
+}
 
-      <div class="controls">
-        <button id="startBtn" class="btn btn-gold" onclick="GameController.start()">🥾 START THE STOMP</button>
-        <button id="restartBtn" class="btn btn-outline" onclick="GameController.restart()">↺ RESTART</button>
-      </div>
+/* ============================================================
+   PARTICLE SYSTEM
+   ============================================================ */
+const ParticleSystem = (() => {
+  let particles = [], shockwaves = [], floatingTexts = [];
 
-      <div class="company-lineup" id="companyLineup">
-        <div class="lineup-title">TODAY'S COMPETITION:</div>
-        <div class="lineup-bugs" id="lineupBugs"></div>
-      </div>
-    </main>
+  function reset() { particles = []; shockwaves = []; floatingTexts = []; }
 
-    <footer class="site-footer">
-      <p>© Western Pest Control · Southern Utah's Pest Professionals · <a href="https://westernpestcontrolut.com" target="_blank">westernpestcontrolut.com</a></p>
-    </footer>
-  </div>
+  function spawnImpact(x, y, color, count=28) {
+    for (let i = 0; i < count; i++) {
+      const angle = Math.random()*Math.PI*2, speed = Math.random()*9+2;
+      const emojis = ['💥','⭐','✨','💫','🌟','👊'];
+      particles.push({ x, y,
+        vx: Math.cos(angle)*speed, vy: Math.sin(angle)*speed-5,
+        life:1, decay: Math.random()*0.025+0.018,
+        color, size: Math.random()*5+3,
+        type: Math.random()>0.55?'emoji':'circle',
+        emoji: emojis[Math.floor(Math.random()*emojis.length)],
+        rotation: Math.random()*Math.PI*2, rotSpeed:(Math.random()-.5)*0.2
+      });
+    }
+  }
+  function spawnDirt(x, y) {
+    for (let i = 0; i < 16; i++) {
+      const angle = Math.PI+Math.random()*Math.PI, speed=Math.random()*7+3;
+      particles.push({ x, y,
+        vx:Math.cos(angle)*speed, vy:Math.sin(angle)*speed-3,
+        life:1, decay:Math.random()*0.03+0.015,
+        color:'#6B4C1E', size:Math.random()*8+3,
+        type:'circle', rotation:0, rotSpeed:0
+      });
+    }
+  }
+  function spawnShockwave(x, y) {
+    shockwaves.push({x,y,radius:0,maxRadius:100,life:1,decay:0.035});
+    shockwaves.push({x,y,radius:0,maxRadius:70,life:1,decay:0.055});
+  }
+  function spawnFloatingText(x, y, text, color='#C88A12') {
+    floatingTexts.push({x,y,text,color,life:1,decay:0.018,vy:-2.2});
+  }
+  function spawnGoldStars(x, y) {
+    for (let i = 0; i < 6; i++) {
+      const angle=(i/6)*Math.PI*2-Math.PI/2, speed=4+Math.random()*3;
+      particles.push({ x, y,
+        vx:Math.cos(angle)*speed, vy:Math.sin(angle)*speed-2,
+        life:1, decay:0.02, color:'#C88A12', size:16,
+        type:'star', rotation:0, rotSpeed:0.08
+      });
+    }
+  }
+  function drawStar(ctx, x, y, radius, points=5) {
+    ctx.beginPath();
+    for (let i=0;i<points*2;i++){
+      const r=i%2===0?radius:radius*0.4;
+      const a=(i/(points*2))*Math.PI*2-Math.PI/2;
+      i===0?ctx.moveTo(x+r*Math.cos(a),y+r*Math.sin(a)):ctx.lineTo(x+r*Math.cos(a),y+r*Math.sin(a));
+    }
+    ctx.closePath(); ctx.fill();
+  }
+  function update() {
+    // Update first, THEN filter so life never goes negative while in draw list
+    particles.forEach(p=>{ p.x+=p.vx; p.y+=p.vy; p.vy+=0.32; p.vx*=0.97; p.life-=p.decay; p.rotation+=p.rotSpeed; });
+    particles=particles.filter(p=>p.life>0);
+    shockwaves.forEach(s=>{ s.radius+=(s.maxRadius-s.radius)*0.15; s.life-=s.decay; });
+    shockwaves=shockwaves.filter(s=>s.life>0);
+    floatingTexts.forEach(t=>{ t.y+=t.vy; t.vy*=0.95; t.life-=t.decay; });
+    floatingTexts=floatingTexts.filter(t=>t.life>0);
+  }
+  function draw(ctx) {
+    shockwaves.forEach(s=>{
+      var r=Math.max(0.001,s.radius);
+      ctx.save(); ctx.globalAlpha=Math.max(0,s.life*0.5);
+      ctx.strokeStyle='#C88A12'; ctx.lineWidth=Math.max(0,3*s.life);
+      ctx.beginPath(); ctx.arc(s.x,s.y,r,0,Math.PI*2); ctx.stroke();
+      ctx.restore();
+    });
+    particles.forEach(p=>{
+      var drawR=Math.max(0,p.size*p.life);
+      ctx.save(); ctx.globalAlpha=Math.max(0,p.life);
+      ctx.translate(p.x,p.y); ctx.rotate(p.rotation);
+      if(p.type==='emoji'){
+        ctx.font=(Math.max(1,p.size*2.5))+'px serif'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(p.emoji,0,0);
+      } else if(p.type==='star'){
+        if(p.size>0){ ctx.fillStyle=p.color; drawStar(ctx,0,0,p.size,5); }
+      } else {
+        if(drawR>0){ ctx.fillStyle=p.color; ctx.beginPath(); ctx.arc(0,0,drawR,0,Math.PI*2); ctx.fill(); }
+      }
+      ctx.restore();
+    });
+    floatingTexts.forEach(t=>{
+      ctx.save(); ctx.globalAlpha=Math.max(0,t.life);
+      ctx.font='bold 26px "Bebas Neue",cursive';
+      ctx.fillStyle=t.color; ctx.strokeStyle='#000'; ctx.lineWidth=3;
+      ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.strokeText(t.text,t.x,t.y); ctx.fillText(t.text,t.x,t.y);
+      ctx.restore();
+    });
+  }
+  return { reset, update, draw, spawnImpact, spawnDirt, spawnShockwave, spawnFloatingText, spawnGoldStars };
+})();
 
-  <script src="js/bugs.js"></script>
-  <script src="js/particles.js"></script>
-  <script src="js/renderer.js"></script>
-  <script src="js/game.js"></script>
-  <script src="js/main.js"></script>
+/* ============================================================
+   BUG ART — each bug drawn procedurally with big logo badge
+   ============================================================ */
+const BugArt = (() => {
+
+  // Bigger, more readable logo badge
+  function drawLogoBadge(ctx, x, y, bgColor, line1, line2, emoji) {
+    const R = 26; // much bigger badge
+    ctx.save();
+    // Drop shadow
+    ctx.beginPath(); ctx.arc(x+2,y+2,R,0,Math.PI*2);
+    ctx.fillStyle='rgba(0,0,0,0.5)'; ctx.fill();
+    // Badge circle
+    ctx.beginPath(); ctx.arc(x,y,R,0,Math.PI*2);
+    ctx.fillStyle=bgColor; ctx.fill();
+    ctx.strokeStyle='rgba(255,255,255,0.9)'; ctx.lineWidth=2.5; ctx.stroke();
+    // Inner ring
+    ctx.beginPath(); ctx.arc(x,y,R-4,0,Math.PI*2);
+    ctx.strokeStyle='rgba(255,255,255,0.3)'; ctx.lineWidth=1; ctx.stroke();
+    // Emoji
+    ctx.font=`${R*0.85}px serif`; ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText(emoji,x,y-R*0.18);
+    // Line 1
+    ctx.font=`bold ${R*0.4}px "Comic Neue",cursive`;
+    ctx.fillStyle='#fff';
+    ctx.shadowColor='rgba(0,0,0,0.8)'; ctx.shadowBlur=3;
+    ctx.fillText(line1,x,y+R*0.3);
+    // Line 2
+    if(line2){
+      ctx.font=`${R*0.32}px "Comic Neue",cursive`;
+      ctx.fillStyle='rgba(255,255,255,0.9)';
+      ctx.fillText(line2,x,y+R*0.62);
+    }
+    ctx.restore();
+  }
+
+  // 1. COCKROACH
+  function drawCockroach(ctx, x, y, squish, wf) {
+    ctx.save(); ctx.translate(x,y);
+    ctx.scale(1+squish*0.6, 1-squish*0.75);
+    const w=Math.sin(wf*0.18)*4;
+    // Shadow
+    ctx.beginPath(); ctx.ellipse(0,42,30*(1+squish*0.4),7+squish*5,0,0,Math.PI*2);
+    ctx.fillStyle='rgba(0,0,0,0.35)'; ctx.fill();
+    // Legs
+    ctx.strokeStyle='#2a1a08'; ctx.lineWidth=2.5;
+    for(let i=-1;i<=1;i++){
+      const lx=i*16, wig=Math.sin(wf*0.18+i)*6;
+      ctx.beginPath(); ctx.moveTo(lx-8,i*8); ctx.lineTo(lx-30,-8+wig); ctx.lineTo(lx-40,8+wig); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(lx+8,i*8); ctx.lineTo(lx+30,-8-wig); ctx.lineTo(lx+40,8-wig); ctx.stroke();
+    }
+    // Abdomen
+    const bg=ctx.createRadialGradient(-6,-8,2,0,2,28);
+    bg.addColorStop(0,'#6a4422'); bg.addColorStop(1,'#2a1505');
+    ctx.beginPath(); ctx.ellipse(0,10,22,30,0,0,Math.PI*2);
+    ctx.fillStyle=bg; ctx.fill();
+    // Wing covers
+    ctx.beginPath(); ctx.ellipse(-8,4,12,24,-0.15,0,Math.PI*2); ctx.fillStyle='#4a2e10'; ctx.fill();
+    ctx.beginPath(); ctx.ellipse(8,4,12,24,0.15,0,Math.PI*2); ctx.fillStyle='#4a2e10'; ctx.fill();
+    // Center stripe
+    ctx.strokeStyle='rgba(0,0,0,0.4)'; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(0,-18); ctx.lineTo(0,34); ctx.stroke();
+    // Thorax
+    ctx.beginPath(); ctx.ellipse(0,-18,15,11,0,0,Math.PI*2); ctx.fillStyle='#3a2010'; ctx.fill();
+    // Head
+    ctx.beginPath(); ctx.ellipse(0,-32,10,9,0,0,Math.PI*2); ctx.fillStyle='#2a1508'; ctx.fill();
+    // Eyes
+    ctx.fillStyle='#ff4400';
+    ctx.beginPath(); ctx.arc(-5,-34,3,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(5,-34,3,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='rgba(255,200,0,0.7)';
+    ctx.beginPath(); ctx.arc(-4,-35,1.2,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(6,-35,1.2,0,Math.PI*2); ctx.fill();
+    // Antennae
+    ctx.strokeStyle='#2a1508'; ctx.lineWidth=1.5;
+    ctx.beginPath(); ctx.moveTo(-4,-40); ctx.quadraticCurveTo(-20,-58+w,-34,-52+w); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(4,-40); ctx.quadraticCurveTo(20,-58-w,34,-52-w); ctx.stroke();
+    // LOGO BADGE — positioned on back, above center
+    if(squish<0.65) drawLogoBadge(ctx,0,0,'#8B4513','HIS','PEST CO','🔧');
+    ctx.restore();
+  }
+
+  // 2. ANT
+  function drawAnt(ctx, x, y, squish, wf) {
+    ctx.save(); ctx.translate(x,y);
+    ctx.scale(1+squish*0.7, 1-squish*0.78);
+    const w=Math.sin(wf*0.2)*6;
+    // Shadow
+    ctx.beginPath(); ctx.ellipse(0,48,24*(1+squish*0.4),6+squish*4,0,0,Math.PI*2);
+    ctx.fillStyle='rgba(0,0,0,0.3)'; ctx.fill();
+    // 6 Legs
+    ctx.strokeStyle='#8B0000'; ctx.lineWidth=2.2;
+    for(let i=-1;i<=1;i++){
+      const wig=Math.sin(wf*0.2+i*1.2)*7;
+      ctx.beginPath(); ctx.moveTo(-7,i*14); ctx.lineTo(-24,i*14-10+wig); ctx.lineTo(-34,i*14+10+wig); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(7,i*14);  ctx.lineTo(24,i*14-10-wig); ctx.lineTo(34,i*14+10-wig); ctx.stroke();
+    }
+    // Gaster (big bottom)
+    ctx.beginPath(); ctx.ellipse(0,22,16,20,0,0,Math.PI*2); ctx.fillStyle='#8B0000'; ctx.fill();
+    ctx.strokeStyle='#5a0000'; ctx.lineWidth=1; ctx.stroke();
+    // Highlight on gaster
+    ctx.fillStyle='rgba(255,100,100,0.2)';
+    ctx.beginPath(); ctx.ellipse(-4,14,8,10,0,0,Math.PI*2); ctx.fill();
+    // Petiole (waist)
+    ctx.beginPath(); ctx.ellipse(0,0,5,7,0,0,Math.PI*2); ctx.fillStyle='#6B0000'; ctx.fill();
+    // Thorax
+    ctx.beginPath(); ctx.ellipse(0,-14,12,11,0,0,Math.PI*2); ctx.fillStyle='#8B0000'; ctx.fill();
+    // Head
+    ctx.beginPath(); ctx.arc(0,-29,12,0,Math.PI*2); ctx.fillStyle='#700000'; ctx.fill();
+    // Mandibles
+    ctx.strokeStyle='#400000'; ctx.lineWidth=2.8;
+    ctx.beginPath(); ctx.moveTo(-6,-33); ctx.quadraticCurveTo(-18,-40,-14,-48); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(6,-33);  ctx.quadraticCurveTo(18,-40,14,-48);  ctx.stroke();
+    // Eyes
+    ctx.fillStyle='#000';
+    ctx.beginPath(); ctx.arc(-6,-30,3.5,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(6,-30,3.5,0,Math.PI*2);  ctx.fill();
+    ctx.fillStyle='#fff';
+    ctx.beginPath(); ctx.arc(-5,-31,1.2,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(7,-31,1.2,0,Math.PI*2);  ctx.fill();
+    // Antennae with elbows
+    ctx.strokeStyle='#5a0000'; ctx.lineWidth=1.8;
+    ctx.beginPath(); ctx.moveTo(-4,-40); ctx.lineTo(-16,-54+w); ctx.lineTo(-8,-66+w); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(4,-40);  ctx.lineTo(16,-54-w);  ctx.lineTo(8,-66-w);  ctx.stroke();
+    // LOGO BADGE on gaster
+    if(squish<0.65) drawLogoBadge(ctx,0,22,'#CC3333','SHOE','PEST','👟');
+    ctx.restore();
+  }
+
+  // 3. SPIDER
+  function drawSpider(ctx, x, y, squish, wf) {
+    ctx.save(); ctx.translate(x,y);
+    ctx.scale(1+squish*0.65, 1-squish*0.75);
+    const w=Math.sin(wf*0.15)*4;
+    // Shadow
+    ctx.beginPath(); ctx.ellipse(0,40,40*(1+squish*0.3),7+squish*4,0,0,Math.PI*2);
+    ctx.fillStyle='rgba(0,0,0,0.3)'; ctx.fill();
+    // Silk thread
+    if(squish<0.1){
+      ctx.strokeStyle='rgba(200,200,200,0.4)'; ctx.lineWidth=1;
+      ctx.beginPath(); ctx.moveTo(0,-44); ctx.lineTo(0,-90); ctx.stroke();
+    }
+    // 8 Legs with joints
+    const legAngles=[-0.55,-0.25,0.25,0.55];
+    ctx.strokeStyle='#1a0a2e'; ctx.lineWidth=3.5;
+    legAngles.forEach((ba,i)=>{
+      const wig=Math.sin(wf*0.15+i*0.8)*6;
+      const lA=-Math.PI*0.5-ba;
+      ctx.beginPath(); ctx.moveTo(-16,0);
+      const m1x=-16+Math.cos(lA)*26, m1y=Math.sin(lA)*26+wig;
+      ctx.lineTo(m1x,m1y); ctx.lineTo(m1x+Math.cos(lA+0.9)*22,m1y+Math.sin(lA+0.9)*22); ctx.stroke();
+      const rA=-Math.PI*0.5+ba;
+      ctx.beginPath(); ctx.moveTo(16,0);
+      const m2x=16+Math.cos(rA)*26, m2y=Math.sin(rA)*26-wig;
+      ctx.lineTo(m2x,m2y); ctx.lineTo(m2x+Math.cos(rA-0.9)*22,m2y+Math.sin(rA-0.9)*22); ctx.stroke();
+    });
+    // Abdomen
+    const abG=ctx.createRadialGradient(-5,-5,2,0,6,22);
+    abG.addColorStop(0,'#3a1f5e'); abG.addColorStop(1,'#180c2e');
+    ctx.beginPath(); ctx.ellipse(0,14,20,26,0,0,Math.PI*2); ctx.fillStyle=abG; ctx.fill();
+    // Hourglass
+    ctx.fillStyle='rgba(255,50,50,0.75)';
+    ctx.beginPath(); ctx.moveTo(0,6); ctx.lineTo(6,12); ctx.lineTo(0,20); ctx.lineTo(-6,12); ctx.closePath(); ctx.fill();
+    // Cephalothorax
+    ctx.beginPath(); ctx.ellipse(0,-12,16,14,0,0,Math.PI*2); ctx.fillStyle='#2a1048'; ctx.fill();
+    // 8 Eyes
+    ctx.fillStyle='#00ffcc';
+    [[-7,-16],[-3,-16],[3,-16],[7,-16],[-5,-10],[0,-10],[5,-10]].forEach(([ex,ey])=>{
+      ctx.beginPath(); ctx.arc(ex,ey,2.2,0,Math.PI*2); ctx.fill();
+    });
+    // Fangs
+    ctx.fillStyle='#0a0018';
+    ctx.beginPath(); ctx.ellipse(-5,-26,3.5,6,-0.3,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(5,-26,3.5,6,0.3,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='#ff2200';
+    ctx.beginPath(); ctx.arc(-5,-31,2,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(5,-31,2,0,Math.PI*2); ctx.fill();
+    // LOGO BADGE on abdomen
+    if(squish<0.65) drawLogoBadge(ctx,0,14,'#C2185B','DIY','PEST','📌');
+    ctx.restore();
+  }
+
+  // 4. SCORPION
+  function drawScorpion(ctx, x, y, squish, wf) {
+    ctx.save(); ctx.translate(x,y);
+    ctx.scale(1+squish*0.7, 1-squish*0.75);
+    const w=Math.sin(wf*0.12)*3;
+    // Shadow
+    ctx.beginPath(); ctx.ellipse(5,44,44*(1+squish*0.3),8+squish*4,0,0,Math.PI*2);
+    ctx.fillStyle='rgba(0,0,0,0.3)'; ctx.fill();
+    // Tail (curved segments)
+    const tailPts=[{x:16,y:10},{x:30,y:0},{x:38,y:-14},{x:36,y:-28},{x:28,y:-38}];
+    ctx.strokeStyle='#2a4020'; ctx.lineWidth=12; ctx.lineCap='round';
+    ctx.beginPath(); ctx.moveTo(14,8);
+    tailPts.forEach(p=>ctx.lineTo(p.x+w*0.3,p.y)); ctx.stroke();
+    tailPts.forEach((s,i)=>{
+      const r=Math.max(0.5,7.5-i*0.5);
+      const sg=ctx.createRadialGradient(s.x-2,s.y-2,1,s.x,s.y,r);
+      sg.addColorStop(0,'#6a9050'); sg.addColorStop(1,'#2a4020');
+      ctx.beginPath(); ctx.arc(s.x+w*0.3,s.y,r,0,Math.PI*2);
+      ctx.fillStyle=sg; ctx.fill();
+      ctx.strokeStyle='#1a3010'; ctx.lineWidth=1; ctx.stroke();
+    });
+    // Stinger
+    ctx.fillStyle='#ff4400';
+    ctx.beginPath(); ctx.moveTo(22+w*0.3,-42); ctx.lineTo(30+w*0.3,-52); ctx.lineTo(18+w*0.3,-48); ctx.closePath(); ctx.fill();
+    // 8 Legs
+    ctx.strokeStyle='#2a4020'; ctx.lineWidth=2.8;
+    for(let i=0;i<4;i++){
+      const ly=-10+i*12, wig=Math.sin(wf*0.12+i)*5;
+      ctx.beginPath(); ctx.moveTo(-11,ly); ctx.lineTo(-28,ly-12+wig); ctx.lineTo(-38,ly+6+wig); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(11,ly);  ctx.lineTo(26,ly-10-wig); ctx.lineTo(36,ly+5-wig); ctx.stroke();
+    }
+    // Body segments
+    [{y:2,rx:15,ry:9},{y:14,rx:14,ry:8},{y:24,rx:13,ry:8},{y:32,rx:11,ry:7}].forEach(s=>{
+      const sg=ctx.createRadialGradient(-3,s.y-2,1,0,s.y,s.rx);
+      sg.addColorStop(0,'#7aaa60'); sg.addColorStop(1,'#2a4020');
+      ctx.beginPath(); ctx.ellipse(0,s.y,s.rx,s.ry,0,0,Math.PI*2);
+      ctx.fillStyle=sg; ctx.fill(); ctx.strokeStyle='#1a3010'; ctx.lineWidth=1; ctx.stroke();
+    });
+    // Claws
+    [[-20,-18,-.35],[20,-18,.35]].forEach(([cx,cy,rot])=>{
+      ctx.save(); ctx.translate(cx,cy); ctx.rotate(rot+Math.sin(wf*0.1)*(rot>0?-.1:.1));
+      ctx.fillStyle='#4a6040'; ctx.strokeStyle='#1a3010'; ctx.lineWidth=1.5;
+      ctx.beginPath(); ctx.ellipse(0,0,14,7,0,0,Math.PI*2); ctx.fill(); ctx.stroke();
+      const sign=cx<0?-1:1;
+      ctx.beginPath(); ctx.arc(sign*12,-4,6,0,Math.PI*2); ctx.fill(); ctx.stroke();
+      ctx.beginPath(); ctx.arc(sign*12,5,6,0,Math.PI*2); ctx.fill(); ctx.stroke();
+      ctx.restore();
+    });
+    // Head
+    ctx.beginPath(); ctx.ellipse(0,-22,13,10,0,0,Math.PI*2); ctx.fillStyle='#3a5030'; ctx.fill();
+    ctx.strokeStyle='#1a3010'; ctx.lineWidth=1; ctx.stroke();
+    ctx.fillStyle='#ffff00';
+    ctx.beginPath(); ctx.arc(-5,-24,3,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(5,-24,3,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='#000';
+    ctx.beginPath(); ctx.arc(-5,-24,1.2,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(5,-24,1.2,0,Math.PI*2); ctx.fill();
+    // LOGO BADGE on body
+    if(squish<0.65) drawLogoBadge(ctx,0,10,'#4a6a2a',"DAVE'S",'PEST','🏘️');
+    ctx.restore();
+  }
+
+  // 5. SILVERFISH
+  function drawSilverfish(ctx, x, y, squish, wf) {
+    ctx.save(); ctx.translate(x,y);
+    ctx.scale(1+squish*0.65, 1-squish*0.72);
+    const wave=Math.sin(wf*0.14)*7;
+    // Shadow
+    ctx.beginPath(); ctx.ellipse(0,40,34*(1+squish*0.3),6+squish*3,0,0,Math.PI*2);
+    ctx.fillStyle='rgba(0,0,0,0.3)'; ctx.fill();
+    // Many legs
+    ctx.strokeStyle='#708090'; ctx.lineWidth=2;
+    for(let i=-2;i<=2;i++){
+      const ly=i*12, wig=Math.sin(wf*0.14+i*0.9)*7;
+      ctx.beginPath(); ctx.moveTo(-11,ly); ctx.lineTo(-28,ly-8+wig); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(11,ly);  ctx.lineTo(28,ly-8-wig);  ctx.stroke();
+    }
+    // 3 tail cerci
+    ctx.strokeStyle='#888'; ctx.lineWidth=1.8;
+    ctx.beginPath(); ctx.moveTo(0,36); ctx.lineTo(-14,54+wave*0.5); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(0,36); ctx.lineTo(14,54-wave*0.5);  ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(0,36); ctx.lineTo(0,58+Math.sin(wf*0.14)*4); ctx.stroke();
+    // Body segments — tapered teardrop
+    for(let i=0;i<11;i++){
+      const t=i/11, segY=-34+i*7;
+      const segR=Math.max(3,5+(1-t)*14*(1-Math.abs(t-0.3)));
+      const wx=Math.sin(wf*0.14+i*0.4)*2.5;
+      const sv=ctx.createRadialGradient(wx-4,segY-2,1,wx,segY,segR);
+      sv.addColorStop(0,'#deeaf5'); sv.addColorStop(0.5,'#9ebed0'); sv.addColorStop(1,'#607888');
+      ctx.beginPath(); ctx.ellipse(wx,segY,segR,5,0,0,Math.PI*2);
+      ctx.fillStyle=sv; ctx.fill();
+      ctx.strokeStyle='rgba(100,130,150,0.35)'; ctx.lineWidth=0.5; ctx.stroke();
+    }
+    // Shimmer overlay
+    ctx.save(); ctx.globalAlpha=0.25;
+    for(let i=0;i<8;i++){
+      const sy2=-28+i*8, sr=5+(1-i/8)*9;
+      ctx.beginPath(); ctx.ellipse(0,sy2,sr*0.6,3,0,0,Math.PI*2);
+      ctx.fillStyle='#fff'; ctx.fill();
+    }
+    ctx.restore();
+    // Head
+    ctx.beginPath(); ctx.ellipse(0,-36,9,8,0,0,Math.PI*2);
+    const hg=ctx.createRadialGradient(-2,-38,1,0,-36,9);
+    hg.addColorStop(0,'#cce0f0'); hg.addColorStop(1,'#6888a8');
+    ctx.fillStyle=hg; ctx.fill();
+    ctx.fillStyle='#000';
+    ctx.beginPath(); ctx.arc(-4,-37,2.8,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(4,-37,2.8,0,Math.PI*2);  ctx.fill();
+    ctx.fillStyle='rgba(255,200,0,0.6)';
+    ctx.beginPath(); ctx.arc(-3.5,-37.5,1.1,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(4.5,-37.5,1.1,0,Math.PI*2); ctx.fill();
+    // Long antennae
+    ctx.strokeStyle='#9ab8c8'; ctx.lineWidth=1.4;
+    ctx.beginPath(); ctx.moveTo(-4,-43); ctx.quadraticCurveTo(-22,-62+wave,-20,-76+wave); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(4,-43);  ctx.quadraticCurveTo(22,-62-wave,20,-76-wave);  ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(0,-43);  ctx.quadraticCurveTo(0,-62,Math.sin(wf*.1)*9,-76); ctx.stroke();
+    // LOGO BADGE
+    if(squish<0.65) drawLogoBadge(ctx,0,-6,'#5a3aa0','HOPE','&PRAY','🙏');
+    ctx.restore();
+  }
+
+  return { drawCockroach, drawAnt, drawSpider, drawScorpion, drawSilverfish };
+})();
+
+/* ============================================================
+   RENDERER
+   ============================================================ */
+const Renderer = (() => {
+  const W=800, H=500, GROUND_Y=400;
+
+  function drawShield(ctx, x, y, scale=1) {
+    ctx.save(); ctx.translate(x,y); ctx.scale(scale,scale);
+    ctx.shadowColor='#C88A12'; ctx.shadowBlur=18;
+    ctx.beginPath();
+    ctx.moveTo(0,-40); ctx.lineTo(32,-22); ctx.lineTo(32,12);
+    ctx.quadraticCurveTo(32,38,0,48); ctx.quadraticCurveTo(-32,38,-32,12);
+    ctx.lineTo(-32,-22); ctx.closePath();
+    ctx.fillStyle='#00457C'; ctx.fill();
+    ctx.strokeStyle='#C88A12'; ctx.lineWidth=3.5; ctx.stroke();
+    ctx.shadowBlur=0;
+    ctx.font='bold 26px "Bebas Neue",cursive';
+    ctx.fillStyle='#C88A12'; ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText('W',0,-8);
+    ctx.font='bold 8px Oswald,sans-serif'; ctx.fillStyle='#fff'; ctx.fillText('WESTERN',0,14);
+    ctx.font='7px Oswald,sans-serif'; ctx.fillStyle='rgba(255,255,255,0.75)'; ctx.fillText('PEST CONTROL',0,25);
+    ctx.restore();
+  }
+
+  function drawBackground(ctx, sx=0, sy=0) {
+    ctx.save(); ctx.translate(sx,sy);
+    const sky=ctx.createLinearGradient(0,0,0,GROUND_Y);
+    sky.addColorStop(0,'#0a1e35'); sky.addColorStop(0.6,'#0d2d50'); sky.addColorStop(1,'#1a4570');
+    ctx.fillStyle=sky; ctx.fillRect(-5,-5,W+10,GROUND_Y+5);
+    // Stars
+    ctx.fillStyle='rgba(255,255,255,0.5)';
+    [[60,30],[180,55],[300,20],[450,45],[580,28],[700,60],[760,18],[120,80],[350,75],[620,82],[50,110],[400,100],[720,92]].forEach(([sx2,sy2])=>{
+      ctx.beginPath(); ctx.arc(sx2,sy2,1.2,0,Math.PI*2); ctx.fill();
+    });
+    // Horizon glow
+    const hg=ctx.createLinearGradient(0,GROUND_Y-60,0,GROUND_Y);
+    hg.addColorStop(0,'rgba(200,138,18,0)'); hg.addColorStop(1,'rgba(200,138,18,0.15)');
+    ctx.fillStyle=hg; ctx.fillRect(0,GROUND_Y-60,W,60);
+    // Ground
+    const gr=ctx.createLinearGradient(0,GROUND_Y,0,H);
+    gr.addColorStop(0,'#8B5E1A'); gr.addColorStop(0.3,'#6B4510'); gr.addColorStop(1,'#3a2008');
+    ctx.fillStyle=gr; ctx.fillRect(-5,GROUND_Y,W+10,H-GROUND_Y+5);
+    // Ground texture
+    ctx.strokeStyle='rgba(200,138,18,0.2)'; ctx.lineWidth=1;
+    for(let gx=0;gx<W;gx+=60){ ctx.beginPath(); ctx.moveTo(gx,GROUND_Y); ctx.lineTo(gx-30,H); ctx.stroke(); }
+    // Ground edge
+    const eg=ctx.createLinearGradient(0,0,W,0);
+    eg.addColorStop(0,'#C88A12'); eg.addColorStop(0.5,'#E8AA22'); eg.addColorStop(1,'#C88A12');
+    ctx.strokeStyle=eg; ctx.lineWidth=3;
+    ctx.beginPath(); ctx.moveTo(0,GROUND_Y); ctx.lineTo(W,GROUND_Y); ctx.stroke();
+    ctx.font='11px Oswald,sans-serif'; ctx.fillStyle='rgba(255,255,255,0.2)';
+    ctx.textAlign='center';
+    ctx.fillText('🏟️ WESTERN PEST CONTROL ARENA — ST. GEORGE, UT',W/2,GROUND_Y+16);
+    ctx.restore();
+  }
+
+  function drawScoreboard(ctx, stompCount) {
+    ctx.save();
+    const h=54;
+    const bg=ctx.createLinearGradient(0,0,W,0);
+    bg.addColorStop(0,'#002d52'); bg.addColorStop(0.5,'#00457C'); bg.addColorStop(1,'#002d52');
+    ctx.fillStyle=bg; ctx.fillRect(0,0,W,h);
+    ctx.strokeStyle='#C88A12'; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(0,h); ctx.lineTo(W,h); ctx.stroke();
+    drawShield(ctx,30,h/2,0.55);
+    ctx.font='bold 22px "Bebas Neue",cursive'; ctx.fillStyle='#C88A12';
+    ctx.textAlign='left'; ctx.textBaseline='middle';
+    ctx.fillText('WESTERN PEST CONTROL',58,h/2-4);
+    ctx.font='11px Oswald,sans-serif'; ctx.fillStyle='rgba(255,255,255,0.55)';
+    ctx.fillText('HERE FOR GOOD · SINCE 2001',60,h/2+13);
+    ctx.font='bold 20px "Bebas Neue",cursive'; ctx.fillStyle='#fff';
+    ctx.textAlign='right'; ctx.fillText(`STOMPED: ${stompCount} / 5`,W-16,h/2-3);
+    for(let i=0;i<5;i++){
+      ctx.fillStyle=i<stompCount?'#C88A12':'rgba(255,255,255,0.15)';
+      ctx.beginPath(); ctx.arc(W-100+i*18,h/2+14,6,0,Math.PI*2); ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  function drawBoot(ctx, x, y, sx=0, sy=0) {
+    ctx.save(); ctx.translate(x+sx, y+sy);
+    // Pants
+    const pg=ctx.createLinearGradient(-22,-130,22,-70);
+    pg.addColorStop(0,'#1a3a6a'); pg.addColorStop(1,'#0d2a50');
+    ctx.fillStyle=pg; ctx.beginPath(); rr(ctx,-22,-130,44,65,4,4,0,0); ctx.fill();
+    // Belt
+    ctx.fillStyle='#8B4513'; ctx.fillRect(-22,-134,44,8);
+    ctx.fillStyle='#C88A12'; ctx.fillRect(-5,-136,10,12);
+    ctx.strokeStyle='#000'; ctx.lineWidth=1; ctx.strokeRect(-5,-136,10,12);
+    // Western text on pants
+    ctx.font='bold 10px "Bebas Neue",cursive'; ctx.fillStyle='#C88A12';
+    ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('WESTERN',0,-106);
+    // Boot shaft
+    const sg=ctx.createLinearGradient(-24,-70,24,-20);
+    sg.addColorStop(0,'#2a1810'); sg.addColorStop(1,'#1a0e08');
+    ctx.fillStyle=sg; ctx.beginPath(); rr(ctx,-22,-70,44,55,2,2,0,0); ctx.fill();
+    ctx.strokeStyle='rgba(200,138,18,0.4)'; ctx.lineWidth=1;
+    ctx.setLineDash([3,3]); ctx.strokeRect(-18,-66,36,47); ctx.setLineDash([]);
+    // Toe box
+    const tg=ctx.createLinearGradient(-34,-20,34,20);
+    tg.addColorStop(0,'#3d2518'); tg.addColorStop(0.5,'#2a1810'); tg.addColorStop(1,'#1a0e08');
+    ctx.fillStyle=tg;
+    ctx.beginPath(); ctx.moveTo(-22,-20); ctx.lineTo(-22,8);
+    ctx.bezierCurveTo(-30,12,-38,16,-38,20); ctx.lineTo(38,20);
+    ctx.bezierCurveTo(38,16,30,12,22,8); ctx.lineTo(22,-20); ctx.closePath(); ctx.fill();
+    ctx.fillStyle='#1a0e08'; ctx.beginPath(); rr(ctx,-22,14,18,16,0,0,3,3); ctx.fill();
+    ctx.fillStyle='#0d0805'; ctx.beginPath(); rr(ctx,-40,20,80,14,0,0,5,5); ctx.fill();
+    ctx.strokeStyle='rgba(255,255,255,0.07)'; ctx.lineWidth=1;
+    for(let tx=-35;tx<35;tx+=12){ ctx.beginPath(); ctx.moveTo(tx,22); ctx.lineTo(tx+4,33); ctx.stroke(); }
+    ctx.fillStyle='rgba(255,255,255,0.08)';
+    ctx.beginPath(); ctx.ellipse(-8,-40,7,18,-0.2,0,Math.PI*2); ctx.fill();
+    ctx.restore();
+  }
+
+  function drawSpeechBubble(ctx, text, x, y, alpha=1) {
+    if(alpha<=0) return;
+    ctx.save(); ctx.globalAlpha=alpha;
+    const lines=text.split('\n');
+    ctx.font='bold 13px "Comic Neue",cursive';
+    const lh=18;
+    const maxW=Math.max(...lines.map(l=>ctx.measureText(l).width))+28;
+    const bh=lines.length*lh+18;
+    const bx=x-maxW/2, by=y-bh-16;
+    ctx.fillStyle='rgba(0,0,0,0.2)'; ctx.beginPath(); rr(ctx,bx+3,by+3,maxW,bh,10,10,10,10); ctx.fill();
+    ctx.fillStyle='#FFFDE7'; ctx.strokeStyle='#333'; ctx.lineWidth=2;
+    ctx.beginPath(); rr(ctx,bx,by,maxW,bh,10,10,10,10); ctx.fill(); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x-10,by+bh); ctx.lineTo(x,by+bh+14); ctx.lineTo(x+10,by+bh);
+    ctx.fillStyle='#FFFDE7'; ctx.fill();
+    ctx.strokeStyle='#333'; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(x-10,by+bh+1); ctx.lineTo(x,by+bh+14); ctx.lineTo(x+10,by+bh+1); ctx.stroke();
+    ctx.fillStyle='#222'; ctx.textAlign='center'; ctx.textBaseline='top';
+    lines.forEach((line,i)=>ctx.fillText(line,x,by+10+i*lh));
+    ctx.restore();
+  }
+
+  function drawRoundIntro(ctx, text, alpha) {
+    if(alpha<=0) return;
+    ctx.save(); ctx.globalAlpha=alpha;
+    ctx.font='bold 52px "Bebas Neue",cursive';
+    ctx.fillStyle='#C88A12'; ctx.strokeStyle='#000'; ctx.lineWidth=5;
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.strokeText(text,W/2,H/2); ctx.fillText(text,W/2,H/2);
+    ctx.restore();
+  }
+
+  function drawStompFlash(ctx, alpha) {
+    if(alpha<=0) return;
+    ctx.save(); ctx.globalAlpha=alpha;
+    ctx.font='bold 90px "Bebas Neue",cursive';
+    ctx.strokeStyle='#000'; ctx.lineWidth=6;
+    ctx.fillStyle='#C88A12'; ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.strokeText('💥 STOMPED! 💥',W/2,H/2-20); ctx.fillText('💥 STOMPED! 💥',W/2,H/2-20);
+    ctx.restore();
+  }
+
+  function drawVictory(ctx, timer) {
+    const alpha=Math.min(1,timer/40);
+    ctx.save();
+    ctx.fillStyle=`rgba(0,30,60,${alpha*0.9})`; ctx.fillRect(0,0,W,H);
+    ctx.globalAlpha=alpha;
+    const glow=ctx.createRadialGradient(W/2,H/2,20,W/2,H/2,300);
+    glow.addColorStop(0,'rgba(200,138,18,0.3)'); glow.addColorStop(1,'rgba(200,138,18,0)');
+    ctx.fillStyle=glow; ctx.fillRect(0,0,W,H);
+    drawShield(ctx,W/2,90,1.8);
+    const b=Math.sin(timer*0.08)*5;
+    ctx.font='bold 68px "Bebas Neue",cursive'; ctx.fillStyle='#C88A12';
+    ctx.strokeStyle='#000'; ctx.lineWidth=5; ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.strokeText('HERE FOR GOOD!',W/2,215+b); ctx.fillText('HERE FOR GOOD!',W/2,215+b);
+    ctx.font='bold 26px "Bebas Neue",cursive'; ctx.fillStyle='#fff'; ctx.lineWidth=3;
+    ['✅ Competition: STOMPED','✅ Southern Utah: PROTECTED','✅ Your Home: A SANCTUARY'].forEach((l,i)=>{
+      ctx.strokeText(l,W/2,278+i*36); ctx.fillText(l,W/2,278+i*36);
+    });
+    ctx.font='17px Oswald,sans-serif'; ctx.fillStyle='#C88A12';
+    ctx.fillText('"We\'re not just here. We\'re Here For Good."',W/2,396);
+    ctx.font='13px Oswald,sans-serif'; ctx.fillStyle='rgba(255,255,255,0.55)';
+    ctx.fillText('📞 Western Pest Control · St. George, UT · 3,000+ Five-Star Reviews',W/2,426);
+    ctx.fillText('Quality Pro Certified · 5-5-5-5 Guarantee · westernpestcontrolut.com',W/2,448);
+    ctx.restore();
+  }
+
+  function drawIdle(ctx) {
+    drawBackground(ctx);
+    drawShield(ctx,W/2,155,2.2);
+    ctx.font='bold 56px "Bebas Neue",cursive'; ctx.fillStyle='#C88A12';
+    ctx.strokeStyle='#000'; ctx.lineWidth=5; ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.strokeText('THE STOMP',W/2,268); ctx.fillText('THE STOMP',W/2,268);
+    ctx.font='18px Oswald,sans-serif'; ctx.fillStyle='rgba(255,255,255,0.7)';
+    ctx.fillText('Western Pest Control vs. The DIY Competition',W/2,308);
+    ctx.font='14px Oswald,sans-serif'; ctx.fillStyle='rgba(255,255,255,0.4)';
+    ctx.fillText('5 insects. 1 boot. Zero mercy.',W/2,336);
+    ctx.font='34px serif'; ctx.textBaseline='middle';
+    ['🪳','🐜','🕷️','🦂','🐛'].forEach((e,i)=>ctx.fillText(e,W/2-80+i*40,384));
+    drawScoreboard(ctx,0);
+  }
+
+  return { W, H, GROUND_Y, drawBackground, drawScoreboard, drawBoot, drawSpeechBubble, drawRoundIntro, drawStompFlash, drawVictory, drawIdle, drawShield };
+})();
+
+/* ============================================================
+   GAME STATE MACHINE
+   ============================================================ */
+const Game = (() => {
+  const { W, H, GROUND_Y } = Renderer;
+
+  const COMPANIES = [
+    { name:"Your Husband's\nPest Control",   shortName:"Your Husband's Pest Control",    tagline:'"He watched a YouTube video!"',       stompLine:'Sir, put down\nthe Raid!',            color:'#8B4513', bugType:'cockroach',  cardEmoji:'🔧' },
+    { name:"Throw Your Shoe\nAt It Pest Co", shortName:"Throw Your Shoe At It",          tagline:'"Now you\'re barefoot AND infested!"', stompLine:'That\'s a $200 heel,\nlady!',         color:'#CC3333', bugType:'ant',        cardEmoji:'👟' },
+    { name:"Pinterest DIY\nPest Solutions",  shortName:"Pinterest DIY Pest Solutions",   tagline:'"Lavender oil repels EVERYTHING!"',    stompLine:'The ants loved\nyour essential oils.', color:'#C2185B', bugType:'spider',     cardEmoji:'📌' },
+    { name:"My Neighbor Dave's\nExterminators", shortName:"My Neighbor Dave's",          tagline:'"He did his own house once!"',         stompLine:'Dave has no\nlicense, ma\'am!',        color:'#4a6a2a', bugType:'scorpion',   cardEmoji:'🏘️' },
+    { name:"Hope & Pray\nPest Management",   shortName:"Hope & Pray Pest Mgmt",          tagline:'"Maybe they\'ll just leave?"',         stompLine:'They multiplied.\nCall Western.',      color:'#5a3aa0', bugType:'silverfish', cardEmoji:'🙏' },
+  ];
+
+  const BOOT_X=W/2, BOOT_IDLE_Y=88, BOOT_STOMP_Y=GROUND_Y-38, BUG_X=W/2, BUG_Y=GROUND_Y-52;
+
+  function createState() {
+    return {
+      phase:'idle', compIdx:0, stompCount:0,
+      timer:0, walkFrame:0,
+      bootY:BOOT_IDLE_Y, squish:0,
+      bubbleText:'', bubbleAlpha:0, bubbleSide:'bug',
+      stompFlashAlpha:0, introAlpha:0,
+      victoryTimer:0, shakeX:0, shakeY:0,
+      bugEntranceX:W+120,
+    };
+  }
+
+  function easeInCubic(t) { return t*t*t; }
+  function easeOutBounce(t) {
+    const n1=7.5625,d1=2.75;
+    if(t<1/d1) return n1*t*t;
+    if(t<2/d1) return n1*(t-=1.5/d1)*t+0.75;
+    if(t<2.5/d1) return n1*(t-=2.25/d1)*t+0.9375;
+    return n1*(t-=2.625/d1)*t+0.984375;
+  }
+
+  function update(s) {
+    if(s.phase==='idle') return s;
+
+    // Victory loop — just keep ticking
+    if(s.phase==='victory') {
+      s.victoryTimer++;
+      ParticleSystem.update();
+      s.shakeX*=0.8; s.shakeY*=0.8;
+      return s;
+    }
+
+    s.timer++;
+    s.walkFrame++;
+    s.shakeX*=0.72; s.shakeY*=0.72;
+    ParticleSystem.update();
+
+    // Fade bubble gradually — slower
+    if(s.bubbleAlpha>0) s.bubbleAlpha=Math.max(0,s.bubbleAlpha-0.006);
+
+    const co=COMPANIES[s.compIdx];
+
+    if(s.phase==='intro') {
+      s.introAlpha=Math.min(1,s.timer/18);
+      const sp=Math.min(1,s.timer/45);
+      s.bugEntranceX=W+120-(W+120-BUG_X)*easeOutBounce(sp);
+      if(s.timer>85) {
+        s.bugEntranceX=BUG_X;
+        s.phase='taunt'; s.timer=0;
+        s.bubbleText=co.tagline; s.bubbleAlpha=1; s.bubbleSide='bug';
+      }
+    }
+    else if(s.phase==='taunt') {
+      if(s.timer>100) {
+        s.phase='incoming'; s.timer=0;
+        s.bubbleText='⚠️ WESTERN BOOTS\nON THE GROUND!'; s.bubbleAlpha=1; s.bubbleSide='boot';
+      }
+    }
+    else if(s.phase==='incoming') {
+      if(s.timer>55) {
+        s.phase='descend'; s.timer=0;
+        s.bubbleText=''; s.bubbleAlpha=0;
+      }
+    }
+    else if(s.phase==='descend') {
+      const t=Math.min(1,s.timer/40);
+      s.bootY=BOOT_IDLE_Y+(BOOT_STOMP_Y-BOOT_IDLE_Y)*easeInCubic(t);
+      if(t>=1) {
+        s.phase='squish'; s.timer=0;
+        ParticleSystem.spawnImpact(BUG_X,BUG_Y,co.color,32);
+        ParticleSystem.spawnDirt(BUG_X,GROUND_Y);
+        ParticleSystem.spawnShockwave(BUG_X,GROUND_Y);
+        ParticleSystem.spawnGoldStars(BUG_X,BUG_Y-20);
+        ParticleSystem.spawnFloatingText(BUG_X-90,BUG_Y-50,'STOMP!','#C88A12');
+        ParticleSystem.spawnFloatingText(BUG_X+70,BUG_Y-80,'💥 STOMPED!','#fff');
+        s.shakeX=(Math.random()-.5)*28; s.shakeY=(Math.random()-.5)*18;
+        s.stompFlashAlpha=1;
+        s.bubbleText=co.stompLine; s.bubbleAlpha=1; s.bubbleSide='boot';
+      }
+    }
+    else if(s.phase==='squish') {
+      s.squish=Math.min(1,s.timer/22);
+      s.stompFlashAlpha=Math.max(0,s.stompFlashAlpha-0.035);
+      if(s.timer>75) {
+        s.phase='bounce'; s.timer=0;
+        s.stompCount++;
+      }
+    }
+    else if(s.phase==='bounce') {
+      const t=s.timer/55;
+      s.bootY=BOOT_STOMP_Y-Math.abs(Math.sin(t*Math.PI*1.5))*85;
+      s.squish=Math.max(0,s.squish-0.025);
+      if(s.timer>60) {
+        s.phase='exit'; s.timer=0;
+      }
+    }
+    else if(s.phase==='exit') {
+      // Boot flies up
+      s.bootY=Math.max(BOOT_IDLE_Y-120,s.bootY-6);
+      // Bug fade out — squish rises to 1 quickly
+      s.squish=Math.min(1,s.squish+0.06);
+      if(s.timer>32) {
+        if(s.compIdx<COMPANIES.length-1) {
+          // *** KEY FIX: fully reset all per-round state before next round ***
+          s.compIdx++;
+          s.squish=0;
+          s.bootY=BOOT_IDLE_Y;
+          s.bugEntranceX=W+120;
+          s.introAlpha=0;
+          s.bubbleText='';
+          s.bubbleAlpha=0;
+          s.stompFlashAlpha=0;
+          s.shakeX=0; s.shakeY=0;
+          s.phase='intro'; s.timer=0;
+        } else {
+          s.phase='victory'; s.timer=0;
+          ParticleSystem.spawnGoldStars(W/2,H/2);
+          ParticleSystem.spawnImpact(W/2,H/2,'#C88A12',40);
+        }
+      }
+    }
+
+    return s;
+  }
+
+  function draw(canvas, s) {
+    const ctx=canvas.getContext('2d');
+    ctx.clearRect(0,0,W,H);
+
+    if(s.phase==='idle') { Renderer.drawIdle(ctx); return; }
+
+    const co=COMPANIES[s.compIdx];
+    const sx=s.shakeX, sy=s.shakeY;
+
+    Renderer.drawBackground(ctx,sx,sy);
+    ParticleSystem.draw(ctx);
+
+    if(s.phase!=='victory') {
+      const bugX=s.bugEntranceX;
+      const bob=Math.sin(s.walkFrame*0.12)*4;
+      const bx=bugX+sx, by=BUG_Y+bob+sy;
+
+      ctx.save();
+      switch(co.bugType){
+        case 'cockroach':  BugArt.drawCockroach(ctx,bx,by,s.squish,s.walkFrame); break;
+        case 'ant':        BugArt.drawAnt(ctx,bx,by,s.squish,s.walkFrame); break;
+        case 'spider':     BugArt.drawSpider(ctx,bx,by,s.squish,s.walkFrame); break;
+        case 'scorpion':   BugArt.drawScorpion(ctx,bx,by,s.squish,s.walkFrame); break;
+        case 'silverfish': BugArt.drawSilverfish(ctx,bx,by,s.squish,s.walkFrame); break;
+      }
+      ctx.restore();
+
+      // Floating company name above bug
+      if(s.squish<0.35 && s.phase!=='exit') {
+        ctx.save();
+        ctx.globalAlpha=Math.max(0,1-s.squish*3);
+        const nameLines=co.name.split('\n');
+        ctx.font='bold 15px "Comic Neue",cursive';
+        ctx.strokeStyle='rgba(0,0,0,0.8)'; ctx.lineWidth=4; ctx.textAlign='center';
+        nameLines.forEach((line,i)=>{
+          const ly=BUG_Y-85-(nameLines.length-1-i)*20+sy;
+          ctx.strokeText(line,bugX+sx,ly);
+        });
+        ctx.fillStyle=co.color;
+        nameLines.forEach((line,i)=>{
+          const ly=BUG_Y-85-(nameLines.length-1-i)*20+sy;
+          ctx.fillText(line,bugX+sx,ly);
+        });
+        ctx.restore();
+      }
+
+      // Speech bubbles
+      if(s.bubbleSide==='bug'&&s.bubbleAlpha>0)
+        Renderer.drawSpeechBubble(ctx,s.bubbleText,bugX+sx,BUG_Y-90+sy,s.bubbleAlpha);
+
+      Renderer.drawBoot(ctx,BOOT_X,s.bootY,sx*0.5,sy*0.5);
+
+      if(s.bubbleSide==='boot'&&s.bubbleAlpha>0)
+        Renderer.drawSpeechBubble(ctx,s.bubbleText,BOOT_X,s.bootY-100,s.bubbleAlpha);
+
+      if(s.stompFlashAlpha>0) Renderer.drawStompFlash(ctx,s.stompFlashAlpha);
+
+      // Round intro flash
+      if(s.phase==='intro'&&s.timer<60) {
+        const t=s.timer<25?s.timer/25:Math.max(0,1-(s.timer-40)/20);
+        Renderer.drawRoundIntro(ctx,`ROUND ${s.compIdx+1}: ${co.shortName.toUpperCase()}`,t);
+      }
+    }
+
+    if(s.phase==='victory') Renderer.drawVictory(ctx,s.victoryTimer);
+
+    Renderer.drawScoreboard(ctx,s.stompCount);
+  }
+
+  return { COMPANIES, createState, update, draw };
+})();
+
+/* ============================================================
+   MAIN CONTROLLER
+   ============================================================ */
+const GameController = (() => {
+  const canvas  =document.getElementById('gameCanvas');
+  const logoCV  =document.getElementById('logoCanvas');
+  const stompEl =document.getElementById('stompCounter');
+  const statusEl=document.getElementById('statusMsg');
+  const lineupEl=document.getElementById('lineupBugs');
+
+  let gs=Game.createState(), rafId=null, running=false;
+
+  const STATUS=[
+    'Round 1 — stomping!',
+    'Round 2 — the boot never tires!',
+    'Round 3 — Southern Utah is watching!',
+    'Round 4 — Here For Good!',
+    'Round 5 — FINISH HIM!',
+  ];
+
+  function drawHeaderLogo() {
+    const ctx=logoCV.getContext('2d');
+    ctx.clearRect(0,0,60,60);
+    Renderer.drawShield(ctx,30,30,0.65);
+  }
+
+  function buildLineup() {
+    lineupEl.innerHTML='';
+    Game.COMPANIES.forEach((co,i)=>{
+      const c=document.createElement('div');
+      c.className='lineup-card'; c.id=`lc-${i}`;
+      c.innerHTML=`<span class="card-emoji">${co.cardEmoji}</span><div class="card-name">${co.shortName}</div>`;
+      lineupEl.appendChild(c);
+    });
+  }
+
+  function updateHUD(s) {
+    stompEl.textContent=`STOMPED: ${s.stompCount} / 5`;
+    if(s.phase==='idle')    statusEl.textContent='Ready to protect Southern Utah?';
+    else if(s.phase==='victory') statusEl.textContent='🏆 ALL 5 STOMPED — Here For Good!';
+    else if(s.phase==='squish'||s.phase==='bounce') statusEl.textContent=STATUS[s.compIdx]||'Stomped!';
+    else if(s.phase==='intro'||s.phase==='taunt') {
+      const co=Game.COMPANIES[s.compIdx];
+      statusEl.textContent=`Round ${s.compIdx+1}: ${co.shortName} enters the arena...`;
+    }
+    // Mark cards
+    Game.COMPANIES.forEach((_,i)=>{
+      const c=document.getElementById(`lc-${i}`); if(!c) return;
+      if(i<s.stompCount){
+        c.classList.add('stomped');
+        if(!c.querySelector('.sc')){ const x=document.createElement('span'); x.className='sc'; x.textContent=' 🥾'; c.appendChild(x); }
+      }
+    });
+  }
+
+  function loop() {
+    gs=Game.update(gs);
+    Game.draw(canvas,gs);
+    updateHUD(gs);
+    // Stop loop only when victory finishes long enough
+    if(gs.phase==='victory'&&gs.victoryTimer>300){
+      running=false;
+      statusEl.textContent='🏆 WESTERN WINS! Click RESTART to stomp again!';
+      return;
+    }
+    if(running) rafId=requestAnimationFrame(loop);
+  }
+
+  function start() {
+    if(running) return;
+    gs=Game.createState();
+    gs.phase='intro'; gs.bugEntranceX=Renderer.W+120;
+    ParticleSystem.reset(); running=true;
+    Game.COMPANIES.forEach((_,i)=>{
+      const c=document.getElementById(`lc-${i}`); if(!c) return;
+      c.classList.remove('stomped');
+      const x=c.querySelector('.sc'); if(x) x.remove();
+    });
+    statusEl.textContent='The stomp has begun!';
+    rafId=requestAnimationFrame(loop);
+  }
+
+  function restart() {
+    running=false;
+    if(rafId) cancelAnimationFrame(rafId);
+    ParticleSystem.reset();
+    gs=Game.createState();
+    Game.draw(canvas,gs); updateHUD(gs);
+    Game.COMPANIES.forEach((_,i)=>{
+      const c=document.getElementById(`lc-${i}`); if(!c) return;
+      c.classList.remove('stomped');
+      const x=c.querySelector('.sc'); if(x) x.remove();
+    });
+    statusEl.textContent='Ready to protect Southern Utah?';
+  }
+
+  function init() {
+    drawHeaderLogo(); buildLineup(); Game.draw(canvas,gs);
+  }
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init);
+  else init();
+
+  return { start, restart };
+})();
+</script>
 </body>
 </html>
