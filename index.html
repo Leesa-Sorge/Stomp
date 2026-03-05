@@ -144,7 +144,7 @@
   </main>
 
   <footer class="site-footer">
-    <p>© Western Pest Control · Southern Utah's Pest Professionals · <a href="https://westernpestcontrolut.com" target="_blank">westernpestcontrolut.com</a></p>
+    <p>© Western Pest Control · Southern Utah's Pest Professionals · <a href="https://wpest.com" target="_blank">wpest.com</a></p>
   </footer>
 </div>
 
@@ -276,7 +276,7 @@ const BugArt = (() => {
 
   // Bigger, more readable logo badge
   function drawLogoBadge(ctx, x, y, bgColor, line1, line2, emoji) {
-    const R = 26; // much bigger badge
+    const R = 44; // large readable badge
     ctx.save();
     // Drop shadow
     ctx.beginPath(); ctx.arc(x+2,y+2,R,0,Math.PI*2);
@@ -694,7 +694,7 @@ const Renderer = (() => {
     if(alpha<=0) return;
     ctx.save(); ctx.globalAlpha=alpha;
     const lines=text.split('\n');
-    ctx.font='bold 13px "Comic Neue",cursive';
+    ctx.font='bold 20px "Comic Neue",cursive';
     const lh=18;
     const maxW=Math.max(...lines.map(l=>ctx.measureText(l).width))+28;
     const bh=lines.length*lh+18;
@@ -752,7 +752,7 @@ const Renderer = (() => {
     ctx.fillText('"We\'re not just here. We\'re Here For Good."',W/2,396);
     ctx.font='13px Oswald,sans-serif'; ctx.fillStyle='rgba(255,255,255,0.55)';
     ctx.fillText('📞 Western Pest Control · St. George, UT · 3,000+ Five-Star Reviews',W/2,426);
-    ctx.fillText('Quality Pro Certified · 5-5-5-5 Guarantee · westernpestcontrolut.com',W/2,448);
+    ctx.fillText('Quality Pro Certified · 5-5-5-5 Guarantee · wpest.com',W/2,448);
     ctx.restore();
   }
 
@@ -788,7 +788,7 @@ const Game = (() => {
     { name:"Hope & Pray\nPest Management",   shortName:"Hope & Pray Pest Mgmt",          tagline:'"Maybe they\'ll just leave?"',         stompLine:'They multiplied.\nCall Western.',      color:'#5a3aa0', bugType:'silverfish', cardEmoji:'🙏' },
   ];
 
-  const BOOT_X=W/2, BOOT_IDLE_Y=88, BOOT_STOMP_Y=GROUND_Y-38, BUG_X=W/2, BUG_Y=GROUND_Y-52;
+  const BOOT_X=W/2, BOOT_IDLE_Y=88, BOOT_STOMP_Y=GROUND_Y-38, BUG_X=W/2, BUG_Y=GROUND_Y-105;
 
   function createState() {
     return {
@@ -828,7 +828,7 @@ const Game = (() => {
     ParticleSystem.update();
 
     // Fade bubble gradually — slower
-    if(s.bubbleAlpha>0) s.bubbleAlpha=Math.max(0,s.bubbleAlpha-0.006);
+    if(s.bubbleAlpha>0) s.bubbleAlpha=Math.max(0,s.bubbleAlpha-0.003);
 
     const co=COMPANIES[s.compIdx];
 
@@ -836,20 +836,20 @@ const Game = (() => {
       s.introAlpha=Math.min(1,s.timer/18);
       const sp=Math.min(1,s.timer/45);
       s.bugEntranceX=W+120-(W+120-BUG_X)*easeOutBounce(sp);
-      if(s.timer>85) {
+      if(s.timer>100) {
         s.bugEntranceX=BUG_X;
         s.phase='taunt'; s.timer=0;
         s.bubbleText=co.tagline; s.bubbleAlpha=1; s.bubbleSide='bug';
       }
     }
     else if(s.phase==='taunt') {
-      if(s.timer>100) {
+      if(s.timer>160) {
         s.phase='incoming'; s.timer=0;
         s.bubbleText='⚠️ WESTERN BOOTS\nON THE GROUND!'; s.bubbleAlpha=1; s.bubbleSide='boot';
       }
     }
     else if(s.phase==='incoming') {
-      if(s.timer>55) {
+      if(s.timer>80) {
         s.phase='descend'; s.timer=0;
         s.bubbleText=''; s.bubbleAlpha=0;
       }
@@ -872,8 +872,8 @@ const Game = (() => {
     }
     else if(s.phase==='squish') {
       s.squish=Math.min(1,s.timer/22);
-      s.stompFlashAlpha=Math.max(0,s.stompFlashAlpha-0.035);
-      if(s.timer>75) {
+      s.stompFlashAlpha=Math.max(0,s.stompFlashAlpha-0.025);
+      if(s.timer>130) {
         s.phase='bounce'; s.timer=0;
         s.stompCount++;
       }
@@ -882,7 +882,7 @@ const Game = (() => {
       const t=s.timer/55;
       s.bootY=BOOT_STOMP_Y-Math.abs(Math.sin(t*Math.PI*1.5))*85;
       s.squish=Math.max(0,s.squish-0.025);
-      if(s.timer>60) {
+      if(s.timer>90) {
         s.phase='exit'; s.timer=0;
       }
     }
@@ -891,7 +891,7 @@ const Game = (() => {
       s.bootY=Math.max(BOOT_IDLE_Y-120,s.bootY-6);
       // Bug fade out — squish rises to 1 quickly
       s.squish=Math.min(1,s.squish+0.06);
-      if(s.timer>32) {
+      if(s.timer>60) {
         if(s.compIdx<COMPANIES.length-1) {
           // *** KEY FIX: fully reset all per-round state before next round ***
           s.compIdx++;
@@ -933,6 +933,10 @@ const Game = (() => {
       const bx=bugX+sx, by=BUG_Y+bob+sy;
 
       ctx.save();
+      // Scale bugs up so they fill the arena properly
+      ctx.translate(bx, by);
+      ctx.scale(2.2, 2.2);
+      ctx.translate(-bx, -by);
       switch(co.bugType){
         case 'cockroach':  BugArt.drawCockroach(ctx,bx,by,s.squish,s.walkFrame); break;
         case 'ant':        BugArt.drawAnt(ctx,bx,by,s.squish,s.walkFrame); break;
@@ -947,15 +951,15 @@ const Game = (() => {
         ctx.save();
         ctx.globalAlpha=Math.max(0,1-s.squish*3);
         const nameLines=co.name.split('\n');
-        ctx.font='bold 15px "Comic Neue",cursive';
-        ctx.strokeStyle='rgba(0,0,0,0.8)'; ctx.lineWidth=4; ctx.textAlign='center';
+        ctx.font='bold 28px "Comic Neue",cursive';
+        ctx.strokeStyle='rgba(0,0,0,0.9)'; ctx.lineWidth=5; ctx.textAlign='center';
         nameLines.forEach((line,i)=>{
-          const ly=BUG_Y-85-(nameLines.length-1-i)*20+sy;
+          const ly=BUG_Y-130-(nameLines.length-1-i)*34+sy;
           ctx.strokeText(line,bugX+sx,ly);
         });
         ctx.fillStyle=co.color;
         nameLines.forEach((line,i)=>{
-          const ly=BUG_Y-85-(nameLines.length-1-i)*20+sy;
+          const ly=BUG_Y-130-(nameLines.length-1-i)*34+sy;
           ctx.fillText(line,bugX+sx,ly);
         });
         ctx.restore();
@@ -963,7 +967,7 @@ const Game = (() => {
 
       // Speech bubbles
       if(s.bubbleSide==='bug'&&s.bubbleAlpha>0)
-        Renderer.drawSpeechBubble(ctx,s.bubbleText,bugX+sx,BUG_Y-90+sy,s.bubbleAlpha);
+        Renderer.drawSpeechBubble(ctx,s.bubbleText,bugX+sx,BUG_Y-180+sy,s.bubbleAlpha);
 
       Renderer.drawBoot(ctx,BOOT_X,s.bootY,sx*0.5,sy*0.5);
 
@@ -973,7 +977,7 @@ const Game = (() => {
       if(s.stompFlashAlpha>0) Renderer.drawStompFlash(ctx,s.stompFlashAlpha);
 
       // Round intro flash
-      if(s.phase==='intro'&&s.timer<60) {
+      if(s.phase==='intro'&&s.timer<90) {
         const t=s.timer<25?s.timer/25:Math.max(0,1-(s.timer-40)/20);
         Renderer.drawRoundIntro(ctx,`ROUND ${s.compIdx+1}: ${co.shortName.toUpperCase()}`,t);
       }
