@@ -1,0 +1,304 @@
+/* ============================================================
+   Western Pest Control — The Stomp
+   Brand Colors: #00457C (Western Blue), #C88A12 (Western Gold)
+   ============================================================ */
+
+:root {
+  --western-blue:   #00457C;
+  --western-gold:   #C88A12;
+  --alt-blue:       #07477F;
+  --comp-blue1:     #6295C3;
+  --comp-blue2:     #799BBD;
+  --burnt-gold:     #D49433;
+  --lapis:          #386994;
+  --white:          #FFFFFF;
+  --gray:           #E8E7E5;
+  --black:          #000000;
+  --cream:          #FFF8E7;
+  --ground-brown:   #6B4C1E;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--western-blue);
+  background-image:
+    radial-gradient(ellipse at 20% 10%, rgba(7,71,127,0.6) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 90%, rgba(0,30,60,0.8) 0%, transparent 60%);
+  min-height: 100vh;
+  font-family: 'Oswald', sans-serif;
+  color: var(--white);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ── HEADER ─────────────────────────────────────────────── */
+.site-header {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  border-bottom: 2px solid rgba(200,138,18,0.35);
+}
+
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+#logoCanvas { border-radius: 50%; background: transparent; }
+
+.header-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-name {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1.35rem;
+  letter-spacing: 2px;
+  color: var(--western-gold);
+  line-height: 1;
+}
+
+.brand-tagline {
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.6);
+  letter-spacing: 1.5px;
+  margin-top: 2px;
+}
+
+.header-badge {
+  font-size: 0.72rem;
+  letter-spacing: 1.5px;
+  color: var(--western-gold);
+  background: rgba(200,138,18,0.12);
+  border: 1px solid rgba(200,138,18,0.3);
+  border-radius: 20px;
+  padding: 5px 14px;
+}
+
+/* ── MAIN STAGE ─────────────────────────────────────────── */
+.stage-wrap {
+  width: 100%;
+  max-width: 900px;
+  padding: 20px 16px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.title-block { text-align: center; }
+
+.stomp-title {
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(2.8rem, 7vw, 4.5rem);
+  color: var(--western-gold);
+  letter-spacing: 4px;
+  text-shadow: 4px 4px 0 rgba(0,0,0,0.5);
+  line-height: 1;
+}
+
+.stomp-sub {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.7);
+  letter-spacing: 2px;
+  margin-top: 4px;
+}
+
+/* ── CANVAS ─────────────────────────────────────────────── */
+.canvas-container {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+}
+
+#gameCanvas {
+  width: 100%;
+  height: auto;
+  display: block;
+  border: 3px solid var(--western-gold);
+  border-radius: 14px;
+  box-shadow:
+    0 0 0 1px rgba(200,138,18,0.2),
+    0 8px 40px rgba(0,0,0,0.6),
+    0 0 80px rgba(0,69,124,0.4);
+}
+
+.round-banner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--western-blue);
+  border: 3px solid var(--western-gold);
+  border-radius: 12px;
+  padding: 14px 32px;
+  font-family: 'Bebas Neue', cursive;
+  font-size: 2rem;
+  letter-spacing: 3px;
+  color: var(--western-gold);
+  text-align: center;
+  pointer-events: none;
+  white-space: nowrap;
+  animation: bannerPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.hidden { display: none !important; }
+
+@keyframes bannerPop {
+  from { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+  to   { transform: translate(-50%, -50%) scale(1);   opacity: 1; }
+}
+
+/* ── HUD ─────────────────────────────────────────────────── */
+.hud-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+}
+
+.hud-box {
+  font-family: 'Bebas Neue', cursive;
+  letter-spacing: 2px;
+  font-size: 1.1rem;
+  color: var(--western-gold);
+  background: rgba(0,0,0,0.35);
+  border: 1px solid rgba(200,138,18,0.3);
+  border-radius: 8px;
+  padding: 8px 20px;
+  min-width: 180px;
+  text-align: center;
+}
+
+#statusMsg {
+  color: rgba(255,255,255,0.85);
+  font-size: 0.95rem;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 400;
+  flex: 1;
+  max-width: 420px;
+}
+
+/* ── CONTROLS ────────────────────────────────────────────── */
+.controls {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.btn {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1.25rem;
+  letter-spacing: 2px;
+  padding: 12px 32px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  box-shadow: 0 5px 0 rgba(0,0,0,0.5);
+}
+
+.btn:hover { transform: translateY(-2px); box-shadow: 0 7px 0 rgba(0,0,0,0.5); }
+.btn:active { transform: translateY(3px); box-shadow: 0 2px 0 rgba(0,0,0,0.5); }
+
+.btn-gold {
+  background: linear-gradient(135deg, var(--western-gold), var(--burnt-gold));
+  color: var(--white);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--white);
+  border: 2px solid rgba(255,255,255,0.4);
+  box-shadow: 0 5px 0 rgba(0,0,0,0.3);
+}
+
+.btn-outline:hover { border-color: var(--western-gold); color: var(--western-gold); }
+
+/* ── COMPANY LINEUP ─────────────────────────────────────── */
+.company-lineup {
+  width: 100%;
+  max-width: 760px;
+  background: rgba(0,0,0,0.25);
+  border: 1px solid rgba(200,138,18,0.2);
+  border-radius: 12px;
+  padding: 16px 20px;
+}
+
+.lineup-title {
+  font-family: 'Bebas Neue', cursive;
+  letter-spacing: 3px;
+  color: var(--western-gold);
+  font-size: 1rem;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.lineup-bugs {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.lineup-card {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.8);
+  transition: background 0.2s;
+  cursor: default;
+  min-width: 130px;
+}
+
+.lineup-card.stomped {
+  background: rgba(200,138,18,0.15);
+  border-color: var(--western-gold);
+  color: var(--western-gold);
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+.lineup-card .card-emoji { font-size: 1.4rem; }
+
+.lineup-card .card-name {
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+/* ── FOOTER ─────────────────────────────────────────────── */
+.site-footer {
+  padding: 20px;
+  text-align: center;
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.35);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  width: 100%;
+}
+
+.site-footer a { color: var(--western-gold); text-decoration: none; }
+.site-footer a:hover { text-decoration: underline; }
+
+/* ── RESPONSIVE ─────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .site-header { flex-direction: column; gap: 8px; text-align: center; }
+  .header-badge { font-size: 0.65rem; }
+  .hud-row { flex-direction: column; align-items: center; }
+  .lineup-card { min-width: 110px; }
+}

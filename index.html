@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Western Pest Control — The Stomp</title>
+  <meta name="description" content="Western Pest Control stomps the DIY competition. Here For Good — St. George, UT since 2001." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@400;600;700&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <div id="app">
+    <header class="site-header">
+      <div class="logo-area">
+        <canvas id="logoCanvas" width="60" height="60"></canvas>
+        <div class="header-text">
+          <span class="brand-name">WESTERN PEST CONTROL</span>
+          <span class="brand-tagline">Here For Good · Since 2001</span>
+        </div>
+      </div>
+      <div class="header-badge">ST. GEORGE, UT · 4.9 ⭐ · 3,000+ REVIEWS</div>
+    </header>
+
+    <main class="stage-wrap">
+      <div class="title-block">
+        <h1 class="stomp-title">🥾 THE STOMP</h1>
+        <p class="stomp-sub">Western Pest Control vs. The DIY Competition</p>
+      </div>
+
+      <div class="canvas-container">
+        <canvas id="gameCanvas" width="800" height="500"></canvas>
+        <div id="roundBanner" class="round-banner hidden"></div>
+      </div>
+
+      <div class="hud-row">
+        <div class="hud-box" id="stompCounter">STOMPED: 0 / 5</div>
+        <div class="hud-box" id="statusMsg">Ready to protect Southern Utah?</div>
+      </div>
+
+      <div class="controls">
+        <button id="startBtn" class="btn btn-gold" onclick="GameController.start()">🥾 START THE STOMP</button>
+        <button id="restartBtn" class="btn btn-outline" onclick="GameController.restart()">↺ RESTART</button>
+      </div>
+
+      <div class="company-lineup" id="companyLineup">
+        <div class="lineup-title">TODAY'S COMPETITION:</div>
+        <div class="lineup-bugs" id="lineupBugs"></div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <p>© Western Pest Control · Southern Utah's Pest Professionals · <a href="https://westernpestcontrolut.com" target="_blank">westernpestcontrolut.com</a></p>
+    </footer>
+  </div>
+
+  <script src="js/bugs.js"></script>
+  <script src="js/particles.js"></script>
+  <script src="js/renderer.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
